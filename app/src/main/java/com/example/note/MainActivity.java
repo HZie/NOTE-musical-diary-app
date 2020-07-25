@@ -62,19 +62,23 @@ public class MainActivity extends AppCompatActivity {
         happy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 여기 채우기
-            }
+                checkingModal.setVisibility(View.VISIBLE);
+                checkingModalText.setText("write a happy music" );            }
         });
 
         neutral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkingModal.setVisibility(View.VISIBLE);
+                checkingModalText.setText("write a music" );
                 // 여기 채우기
             }
         });
         sad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkingModal.setVisibility(View.VISIBLE);
+                checkingModalText.setText("write a sad music" );
                 // 여기 채우기
             }
         });

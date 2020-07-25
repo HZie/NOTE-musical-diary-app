@@ -154,7 +154,7 @@
                     android:layout_weight="1"
                     android:textAlignment="center"
                     android:layout_marginTop="10dp"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     tools:layout_editor_absoluteX="70dp"
                     tools:layout_editor_absoluteY="300dp" />
 

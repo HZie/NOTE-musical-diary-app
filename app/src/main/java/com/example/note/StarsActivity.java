@@ -28,7 +28,11 @@ public class StarsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                overridePendingTransition(0,0); //0 for no animation
                 startActivity(intent);
+
+
             }
         });
 
@@ -36,8 +40,12 @@ public class StarsActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
                 Intent intent=new Intent(getApplicationContext(),CalendarActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                overridePendingTransition(0,0); //0 for no animation
                 startActivity(intent);
+
 
             }
         });
@@ -47,7 +55,10 @@ public class StarsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(),StarsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                overridePendingTransition(0,0); //0 for no animation
                 startActivity(intent);
+
 
             }
         });
@@ -57,7 +68,10 @@ public class StarsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(),SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                overridePendingTransition(0,0); //0 for no animation
                 startActivity(intent);
+
 
             }
         });
