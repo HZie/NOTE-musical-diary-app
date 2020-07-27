@@ -15,38 +15,38 @@
 
         <ImageView
             android:id="@+id/main"
-            android:layout_width="84dp"
+            android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/primary"
-            android:padding="10dp"
-            android:src="@drawable/question_white" />
+            android:padding="15dp"
+            android:src="@drawable/white_question" />
 
         <ImageView
             android:id="@+id/calendar"
             android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="1dp"
             android:layout_height="match_parent"
             android:padding="15dp"
-            android:src="@drawable/calendar_green"/>
+            android:src="@drawable/calendar1x"/>
 
         <ImageView
             android:id="@+id/stars"
             android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/primary"
             android:padding="15dp"
-            android:src="@drawable/star_white"/>
+            android:src="@drawable/white_star1x"/>
 
         <ImageView
             android:id="@+id/settings"
             android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/primary"
-            android:padding="20dp"
-            android:src="@drawable/settings_white"/>
+            android:padding="10dp"
+            android:src="@drawable/white_dot1x"/>
 
     </LinearLayout>
 
