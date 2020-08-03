@@ -2,11 +2,14 @@ package com.example.note;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import midi.MidiFile;
 import midi.MidiTrack;
@@ -14,12 +17,12 @@ import midi.event.meta.Tempo;
 import midi.event.meta.TimeSignature;
 
 public class RecordActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
         generateNotes(60,87);
+        loadNotes(60,87);
     }
 
     // Generate notes
@@ -45,7 +48,7 @@ public class RecordActivity extends AppCompatActivity {
             // Track 1 will have notes
             int channel = 0;
             int velocity = 100;
-            long tick = 10;
+            long tick = 1;
             long duration = 5000;
             noteTrack.insertNote(channel,i,velocity,tick,duration);
             ArrayList<MidiTrack> tracks = new ArrayList<MidiTrack>();
@@ -65,4 +68,25 @@ public class RecordActivity extends AppCompatActivity {
 
         }
     }
+
+    // load notes
+    private static HashMap<Integer, Uri> noteMap = new HashMap<Integer, Uri>();
+
+    private void loadNotes(int start, int end){
+        for(int i = start; i <= end; i++){
+            try{
+                Uri uriPath = Uri.parse(getFilesDir()+"/MidiNotes/"+i+".mid");
+                noteMap.put(i,uriPath);
+            }
+            catch(Exception e){
+                System.err.print(e);
+            }
+        }
+    }
+
+    public static HashMap<Integer, Uri> getNoteMap(){
+        return noteMap;
+    }
+
+
 }

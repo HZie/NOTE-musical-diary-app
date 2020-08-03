@@ -21,14 +21,23 @@ import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.icu.text.AlphabeticIndex;
 import android.media.MediaPlayer;
 
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.note.RecordActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 
 /**
@@ -106,12 +115,20 @@ public class KeyboardView extends View {
     private int mLowestPitch = 60;
     private ArrayList<MusicKeyListener> mListeners = new ArrayList<MusicKeyListener>();
 
-    /** Implement this to receive keyboard events. */
+    HashMap<Integer, Uri> noteMap;
+
+    /**
+     * Implement this to receive keyboard events.
+     */
     public interface MusicKeyListener {
-        /** This will be called when a key is pressed. */
+        /**
+         * This will be called when a key is pressed.
+         */
         public void onKeyDown(int keyIndex);
 
-        /** This will be called when a key is pressed. */
+        /**
+         * This will be called when a key is pressed.
+         */
         public void onKeyUp(int keyIndex);
     }
 
@@ -141,6 +158,7 @@ public class KeyboardView extends View {
         mWhiteOffKeyPaint.setStyle(Paint.Style.FILL);
         mWhiteOffKeyPaint.setColor(0xFFF0F0F0);
 
+        noteMap = RecordActivity.getNoteMap();
     }
 
     @Override
@@ -242,7 +260,7 @@ public class KeyboardView extends View {
         // Some devices can return negative x or y, which can cause an array exception.
         x = Math.max(x, 0.0f);
         y = Math.max(y, 0.0f);
-        boolean handled =  false;
+        boolean handled = false;
         switch (action) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -279,8 +297,11 @@ public class KeyboardView extends View {
         return true;
     }
 
+
     private void onFingerDown(int id, float x, float y) {
         int pitch = xyToPitch(x, y);
+        Log.d("x,y", String.valueOf(x) + String.valueOf(y));
+        Log.d("pitch", String.valueOf(pitch));
         fireKeyDown(pitch);
         mFingerMap.put(id, pitch);
     }
@@ -328,20 +349,23 @@ public class KeyboardView extends View {
         mFingerMap.clear();
     }
 
+
     private void fireKeyDown(int pitch) {
-        for (MusicKeyListener listener : mListeners) {
-            listener.onKeyDown(pitch);
+        try {
+            pianoMediaPlayer = MediaPlayer.create(this.getContext(), noteMap.get(pitch));
+            pianoMediaPlayer.start();
         }
-        mNotesOnByPitch[pitch] = true;
-        invalidate();
+        catch(Exception e){
+            System.err.print(e);
+        }
     }
 
     private void fireKeyUp(int pitch) {
-        for (MusicKeyListener listener : mListeners) {
-            listener.onKeyUp(pitch);
+        if(pianoMediaPlayer != null){
+            pianoMediaPlayer.pause();
+            pianoMediaPlayer.release();
+            pianoMediaPlayer = null;
         }
-        mNotesOnByPitch[pitch] = false;
-        invalidate();
     }
 
     private int xyToPitch(float x, float y) {
@@ -387,53 +411,5 @@ public class KeyboardView extends View {
             }
         }
         return result;
-    }
-
-    public void addMusicKeyListener(MusicKeyListener musicKeyListener) {
-        mListeners.add(musicKeyListener);
-    }
-
-    public void removeMusicKeyListener(MusicKeyListener musicKeyListener) {
-        mListeners.remove(musicKeyListener);
-    }
-
-    /**
-     * Set the pitch of the lowest, leftmost key. If you set it to a black key then it will get
-     * adjusted upwards to a white key. Forces a redraw.
-     */
-    public void setLowestPitch(int pitch) {
-        if (isPitchBlack(pitch)) {
-            pitch++; // force to next white key
-        }
-        mLowestPitch = pitch;
-        postInvalidate();
-    }
-
-    public int getLowestPitch() {
-        return mLowestPitch;
-    }
-
-    /**
-     * Set the number of white keys in portrait mode.
-     */
-    public void setNumPortraitKeys(int numPortraitKeys) {
-        mNumPortraitKeys = numPortraitKeys;
-        postInvalidate();
-    }
-
-    public int getNumPortraitKeys() {
-        return mNumPortraitKeys;
-    }
-
-    /**
-     * Set the number of white keys in landscape mode.
-     */
-    public void setNumLandscapeKeys(int numLandscapeKeys) {
-        mNumLandscapeKeys = numLandscapeKeys;
-        postInvalidate();
-    }
-
-    public int getNumLandscapeKeys() {
-        return mNumLandscapeKeys;
     }
 }
