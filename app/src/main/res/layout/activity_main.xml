@@ -90,6 +90,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="15dp"
+            android:background="#ffffff"
             android:src="@drawable/question1x" />
 
         <ImageView

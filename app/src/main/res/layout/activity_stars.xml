@@ -38,6 +38,7 @@
             android:layout_height="match_parent"
             android:layout_width="1dp"
             android:padding="15dp"
+            android:background="#ffffff"
             android:src="@drawable/star1x"/>
 
         <ImageView

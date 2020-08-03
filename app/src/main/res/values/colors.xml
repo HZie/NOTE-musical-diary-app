@@ -6,5 +6,6 @@
 
     <color name="background">#FFFFFF</color>
     <color name= "primary">#029258</color>
-    <color name= 'text'>#C4C4C4</color>
+    <color name= 'textField'>#88C4C4C4</color>
+    <color name="text">#989797</color>
 </resources>

@@ -28,6 +28,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:padding="15dp"
+            android:background="#ffffff"
             android:src="@drawable/calendar1x"/>
 
         <ImageView

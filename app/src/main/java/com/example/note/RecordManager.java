@@ -4,12 +4,24 @@ import android.content.Context;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.cert.CollectionCertStoreParameters;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RecordManager {
-    private static final String FILE_NAME = "Memo.txt";
+
+    SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd");
+    Date date=new Date();
+    String dateFormat=format.format(date);
+
+    //private static final String FILE_NAME = "Memo.txt";
     // 메모 내용을 저장할 파일 이름
+
+    String FILE_NAME=dateFormat+".txt";
+
     Context mContext = null;
     public RecordManager(Context context) {
+
         mContext = context;
     }
 
