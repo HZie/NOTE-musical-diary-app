@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">NOTE</string>
+    <string name="title_activity_select_feelings">SelectFeelingsActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="write_diary">write diary</string>
+</resources>
