@@ -21,11 +21,9 @@ import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.icu.text.AlphabeticIndex;
 import android.media.MediaPlayer;
 
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -35,9 +33,7 @@ import com.example.note.RecordActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+
 
 
 /**
@@ -113,24 +109,10 @@ public class KeyboardView extends View {
     // Note number for the left most key.
     //private int mLowestPitch = PITCH_MIDDLE_C - NOTES_PER_OCTAVE;
     private int mLowestPitch = 60;
-    private ArrayList<MusicKeyListener> mListeners = new ArrayList<MusicKeyListener>();
 
     HashMap<Integer, Uri> noteMap;
+    HashMap<Integer, String> noteName;
 
-    /**
-     * Implement this to receive keyboard events.
-     */
-    public interface MusicKeyListener {
-        /**
-         * This will be called when a key is pressed.
-         */
-        public void onKeyDown(int keyIndex);
-
-        /**
-         * This will be called when a key is pressed.
-         */
-        public void onKeyUp(int keyIndex);
-    }
 
     public KeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -159,6 +141,7 @@ public class KeyboardView extends View {
         mWhiteOffKeyPaint.setColor(0xFFF0F0F0);
 
         noteMap = RecordActivity.getNoteMap();
+        noteName = RecordActivity.getNoteName();
     }
 
     @Override
@@ -260,12 +243,10 @@ public class KeyboardView extends View {
         // Some devices can return negative x or y, which can cause an array exception.
         x = Math.max(x, 0.0f);
         y = Math.max(y, 0.0f);
-        boolean handled = false;
         switch (action) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
                 onFingerDown(id, x, y);
-                handled = true;
                 break;
             case MotionEvent.ACTION_MOVE:
                 int pointerCount = event.getPointerCount();
@@ -277,16 +258,13 @@ public class KeyboardView extends View {
                     y = Math.max(y, 0.0f);
                     onFingerMove(id, x, y);
                 }
-                handled = true;
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
                 onFingerUp(id, x, y);
-                handled = true;
                 break;
             case MotionEvent.ACTION_CANCEL:
                 onAllFingersUp();
-                handled = true;
                 break;
             default:
                 break;
@@ -303,6 +281,7 @@ public class KeyboardView extends View {
         Log.d("x,y", String.valueOf(x) + String.valueOf(y));
         Log.d("pitch", String.valueOf(pitch));
         fireKeyDown(pitch);
+        RecordActivity.addMelody(pitch);
         mFingerMap.put(id, pitch);
     }
 
