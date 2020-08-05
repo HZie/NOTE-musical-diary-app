@@ -2,6 +2,7 @@ package com.example.note;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -46,16 +47,32 @@ public class CalendarActivity extends AppCompatActivity
     TextView textView;
 
     private ImageView main;
-    private  ImageView calendar;
+    private ImageView calendar;
     private ImageView stars;
     private ImageView settings;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        ButterKnife.bind(this);
+
+     //   MaterialCalendarView widget = (MaterialCalendarView)  findViewById(R.id.calendarView);
+     //  TextView textView = (TextView ) findViewById(R.id.textView);
+
+        int showOtherDates = widget.getShowOtherDates();
+        showOtherDates |= MaterialCalendarView.SHOW_OTHER_MONTHS;
+        showOtherDates &= ~MaterialCalendarView.SHOW_OUT_OF_RANGE;
+        showOtherDates &= ~MaterialCalendarView.SHOW_DECORATED_DISABLED;
+        widget.setShowOtherDates(showOtherDates);
+        widget.setOnDateChangedListener(this);
+        widget.setOnDateLongClickListener(this);
+        widget.setOnMonthChangedListener(this);
+        widget.setAllowClickDaysOutsideCurrentMonth(true);
+        //Setup initial text
+        textView.setText("No Selection");
+
+
 
         main=findViewById(R.id.main);
         calendar=findViewById(R.id.calendar);
@@ -109,8 +126,6 @@ public class CalendarActivity extends AppCompatActivity
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 overridePendingTransition(0,0); //0 for no animation
                 startActivity(intent);
-
-
             }
         });
 
@@ -142,7 +157,19 @@ public class CalendarActivity extends AppCompatActivity
         widget.state().edit().setCalendarDisplayMode(mode).commit();
     }
 
-//    @OnClick(R.id.button_selection_mode) void onChangeSelectionMode() {
+    @OnClick(R.id.button_selection_mode) void onChangeSelectionMode() {
+                new AlertDialog.Builder(this)
+                .setTitle("Selection Mode")
+                .setSingleChoiceItems(ITEMS, widget.getSelectionMode(),new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do something here
+                        widget.setSelectionMode(which);
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
 //        new AlertDialog.Builder(this)
 //                .setTitle("Selection Mode")
 //                .setSingleChoiceItems(ITEMS, widget.getSelectionMode(), (dialog, which) -> {
@@ -150,7 +177,7 @@ public class CalendarActivity extends AppCompatActivity
 //                    dialog.dismiss();
 //                })
 //                .show();
-//    }
+    }
 
     @OnClick(R.id.get_selected_dates) public void getSelectedDateClick(final View v) {
         final List<CalendarDay> selectedDates = widget.getSelectedDates();
@@ -161,7 +188,5 @@ public class CalendarActivity extends AppCompatActivity
             Toast.makeText(this, "No Selection", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
 }
