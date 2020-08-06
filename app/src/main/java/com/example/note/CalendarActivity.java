@@ -14,10 +14,12 @@ public class CalendarActivity extends AppCompatActivity {
     private ImageView stars;
     private ImageView settings;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
 
         main=findViewById(R.id.main);
         calendar=findViewById(R.id.calendar);
