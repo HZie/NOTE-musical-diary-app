@@ -34,9 +34,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/app/src/main/java/com/example/note/CalendarActivity.java" root0="FORCE_HIGHLIGHTING" />
-  </component>
   <component name="ProjectId" id="1fOTtJHWpQfOsfA8uC4cP0OUW6F" />
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
