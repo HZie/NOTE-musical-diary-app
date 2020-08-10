@@ -8,6 +8,9 @@ import android.widget.Button;
 
 
 public class FirstScreenActivity extends AppCompatActivity {
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
 
     private Button button;
 

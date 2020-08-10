@@ -1,6 +1,7 @@
 package com.example.note;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,26 +44,81 @@ public class RecordActivity extends AppCompatActivity {
     Date curr;
     String fileName;
 
+    TextView dateText;
+    EditText mMemoEdit;
+    Button saveButton;
+    RecordManager mTextFileManager;
+    ConstraintLayout modal;
+    TextView modalText;
+    Button leftbtn;
+    Button rightbtn;
+
+    @Override
+    public void onBackPressed() {
+
+        modal=findViewById(R.id.modal);
+        modalText=findViewById(R.id.modalText);
+        leftbtn=findViewById(R.id.leftbtn);
+        rightbtn=findViewById(R.id.rightbtn);
+
+        modal.setVisibility(View.VISIBLE);
+        modalText.setText("Work will be not saved");
+        leftbtn.setText("Cancel");
+        rightbtn.setText("Continue");
+
+        leftbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modal.setVisibility(View.GONE);
+                Intent intent=new Intent(RecordActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        rightbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modal.setVisibility(View.GONE);
+
+            }
+        });
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
         generateNotes(60,87);
         loadNotes(60,87);
 
+        mTextFileManager = new RecordManager(this);
+        mMemoEdit = findViewById(R.id.diaryedit);
+        //modal=findViewById(R.id.modal);
+        //modalText=findViewById(R.id.modalText);
+        //leftbtn=findViewById(R.id.leftbtn);
+        //rightbtn=findViewById(R.id.rightbtn);
+
         curr = Calendar.getInstance().getTime();
         fileName = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(curr);
 
         noteView=(TextView)findViewById(R.id.noteText);
-        noteView.setText("Play piano to create melody.");
+        //noteView.setText("Play piano to create melody.");
         btnSave = (Button)findViewById(R.id.btn_recordSave);
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String memoData = mMemoEdit.getText().toString();
+                mTextFileManager.save(memoData);
+                //mMemoEdit.setText("");
+
                 createMelody();
-                Intent intent=new Intent(getApplicationContext(),CalendarActivity.class);
-                startActivity(intent);
+                //Intent intent=new Intent(getApplicationContext(),CalendarActivity.class);
+                //startActivity(intent);
                 Toast toast = Toast.makeText(getApplicationContext(),"Your melody is saved",Toast.LENGTH_LONG);
                 toast.show();
             }
@@ -73,7 +130,7 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 melodyStr.clear();
                 melody.clear();
-                noteView.setText("Play piano to create melody.");
+                noteView.setText("");
                 isClean = true;
                 Toast toast = Toast.makeText(getApplicationContext(),"Your melody is cleared",Toast.LENGTH_LONG);
                 toast.show();
@@ -89,7 +146,47 @@ public class RecordActivity extends AppCompatActivity {
         });
 
 
+
+
+/*
+        SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd");
+        Date date=new Date();
+        String dateFormat=format.format(date);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modal.setVisibility(View.VISIBLE);
+                modalText.setText("Are you sure to save?");
+                leftbtn.setText("NO");
+                rightbtn.setText("YES");
+
+            }
+        });
+
+        leftbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modal.setVisibility(View.GONE);
+            }
+        });
+
+        rightbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modal.setVisibility(View.GONE);
+
+                String memoData = mMemoEdit.getText().toString();
+                mTextFileManager.save(memoData);
+                mMemoEdit.setText("");
+                Toast.makeText(getApplicationContext(), "save completed", Toast.LENGTH_LONG).show();
+            }
+        });
+*/
+
     }
+
+
 
     public static void addMelody(int key){
         if(isClean){

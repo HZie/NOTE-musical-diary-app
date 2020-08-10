@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         continue_.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkingModal.setVisibility(View.GONE);
                 Intent intent=new Intent(MainActivity.this, RecordActivity.class);
                 startActivity(intent);
             }
