@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -13,11 +15,40 @@ public class SettingsActivity extends AppCompatActivity {
     private  ImageView calendar;
     private ImageView stars;
     private ImageView settings;
+    private EditText namespace;
+    private EditText about;
+    private Button editButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+
+        namespace=findViewById(R.id.namespace);
+        about=findViewById(R.id.infospace);
+        editButton=findViewById(R.id.editButton);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (editButton.getText().toString()=="EDIT"){
+                    namespace.setEnabled(true);
+                    about.setEnabled(true);
+                    UserInfo.userName=namespace.getText().toString();
+                    editButton.setText("SAVE");
+                }else{
+                    namespace.setEnabled(false);
+                    about.setEnabled(false);
+                    editButton.setText("EDIT");
+                }
+
+            }
+        });
+
+
+
 
         main=findViewById(R.id.main);
         calendar=findViewById(R.id.calendar);

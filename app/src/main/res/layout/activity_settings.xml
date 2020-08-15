@@ -2,12 +2,120 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".SettingsActivity">
+    android:background="@color/colorBackground"
+    tools:context=".SettingsActivity"
+    android:layout_width="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="30dp"
+        tools:ignore="MissingConstraints">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:background="@drawable/circled_rectangle"
+            app:layout_constraintCircleRadius="3dp"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textSize="30dp"
+                    android:padding="10dp"
+                    android:textColor="@color/colorPrimary"
+                    />
+
+                <Button
+                    android:id="@+id/editButton"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/button_circledrec"
+                    android:text="EDIT"
+                    android:textColor="#FFFF"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/profileImage"
+                android:layout_height="120dp"
+                android:layout_width="90dp"
+                android:layout_gravity="center"
+                android:background="@color/cardview_dark_background" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+            <EditText
+                android:paddingTop="10dp"
+                android:id="@+id/namespace"
+                android:hint="your name"
+                android:textColor="@color/colorPrimaryDark"
+                android:enabled="false"
+                android:textAlignment="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_gravity="center" />
+
+
+            <EditText
+                android:id="@+id/infospace"
+                android:layout_width="268dp"
+                android:layout_height="39dp"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:enabled="false"
+                android:hint="about you"
+                android:inputType="textMultiLine"
+                android:paddingTop="10dp"
+                android:textAlignment="center"
+                android:textSize="15dp" />
+
+            <TextView
+                android:paddingTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="20dp"
+            app:layout_constraintCircleRadius="3dp"
+            android:backgroundTint="@color/background"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact Us"
+                android:textSize="30dp"
+                android:padding="10dp"
+                android:textColor="@color/colorPrimary"
+                />
+            <TextView
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="____________________"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+        ></LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal"
@@ -25,29 +133,30 @@
 
         <ImageView
             android:id="@+id/calendar"
-            android:layout_weight="1"
             android:layout_width="1dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@color/primary"
             android:padding="15dp"
-            android:src="@drawable/white_calendar1x"/>
+            android:src="@drawable/white_calendar1x" />
 
         <ImageView
             android:id="@+id/stars"
-            android:layout_weight="1"
             android:layout_width="1dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@color/primary"
             android:padding="15dp"
-            android:src="@drawable/white_star1x"/>
+            android:src="@drawable/white_star1x" />
 
         <ImageView
             android:id="@+id/settings"
-            android:layout_weight="1"
             android:layout_width="1dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#ffffff"
             android:padding="10dp"
-            android:src="@drawable/dot1x"/>
+            android:src="@drawable/dot1x" />
 
     </LinearLayout>
 
