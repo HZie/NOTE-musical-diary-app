@@ -63,10 +63,10 @@ public class RecordActivity extends AppCompatActivity {
 
         modal.setVisibility(View.VISIBLE);
         modalText.setText("Work will be not saved");
-        leftbtn.setText("Cancel");
         rightbtn.setText("Continue");
+        leftbtn.setText("Cancel");
 
-        leftbtn.setOnClickListener(new View.OnClickListener() {
+        rightbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 modal.setVisibility(View.GONE);
@@ -75,7 +75,7 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
-        rightbtn.setOnClickListener(new View.OnClickListener() {
+        leftbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 modal.setVisibility(View.GONE);
