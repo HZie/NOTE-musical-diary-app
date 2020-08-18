@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private Button continue_;
     private ConstraintLayout wholeScreen;
 
+    private String checkedFeeling;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +65,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkingModal.setVisibility(View.VISIBLE);
-                checkingModalText.setText("write a happy music" );            }
+                checkingModalText.setText("write a happy music" );
+                checkedFeeling = "H";
+            }
         });
 
         neutral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkingModal.setVisibility(View.VISIBLE);
-                checkingModalText.setText("write a music" );
+                checkingModalText.setText("write a neutral music" );
+                checkedFeeling = "N";
                 // 여기 채우기
             }
         });
@@ -79,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 checkingModal.setVisibility(View.VISIBLE);
                 checkingModalText.setText("write a sad music" );
+                checkedFeeling = "S";
                 // 여기 채우기
             }
         });
@@ -88,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 checkingModal.setVisibility(View.VISIBLE);
                 checkingModalText.setText("write an angry music" );
+                checkedFeeling = "A";
             }
         });
 
@@ -98,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 checkingModal.setVisibility(View.GONE);
                 Intent intent=new Intent(MainActivity.this, RecordActivity.class);
+                intent.putExtra("feeling",checkedFeeling);
                 startActivity(intent);
             }
         });

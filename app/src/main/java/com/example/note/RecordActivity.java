@@ -14,7 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,14 +46,14 @@ public class RecordActivity extends AppCompatActivity {
     Date curr;
     String fileName;
 
-    TextView dateText;
     EditText mMemoEdit;
-    Button saveButton;
     RecordManager mTextFileManager;
     ConstraintLayout modal;
     TextView modalText;
     Button leftbtn;
     Button rightbtn;
+
+    String checkedFeeling;
 
     @Override
     public void onBackPressed() {
@@ -101,21 +103,24 @@ public class RecordActivity extends AppCompatActivity {
         //leftbtn=findViewById(R.id.leftbtn);
         //rightbtn=findViewById(R.id.rightbtn);
 
+        Intent intent = getIntent();
+        checkedFeeling = intent.getExtras().getString("feeling");
+
         curr = Calendar.getInstance().getTime();
         fileName = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(curr);
+        fileName = fileName+"_"+checkedFeeling;
 
         noteView=(TextView)findViewById(R.id.noteText);
         //noteView.setText("Play piano to create melody.");
         btnSave = (Button)findViewById(R.id.btn_recordSave);
 
+
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String memoData = mMemoEdit.getText().toString();
-                mTextFileManager.save(memoData);
-                //mMemoEdit.setText("");
-
+                saveMemo();
                 createMelody();
                 //Intent intent=new Intent(getApplicationContext(),CalendarActivity.class);
                 //startActivity(intent);
@@ -324,6 +329,26 @@ public class RecordActivity extends AppCompatActivity {
     }
     public static HashMap<Integer, String> getNoteName(){
         return noteName;
+    }
+
+    private void saveMemo(){
+        File memoFolder = new File(this.getApplicationContext().getFilesDir(),"Memos");
+        if(!memoFolder.exists()){
+            memoFolder.mkdir();
+        }
+
+        String dirPath = this.getApplicationContext().getFilesDir().toString();
+        File memoFile = new File(dirPath+"/Memos/",fileName+".txt");
+
+        String memoData = mMemoEdit.getText().toString();
+
+        try{
+            BufferedWriter buff = new BufferedWriter(new FileWriter(memoFile));
+            buff.write(memoData);
+            buff.close();
+        }catch(IOException e){
+            System.err.println(e);
+        }
     }
 
 

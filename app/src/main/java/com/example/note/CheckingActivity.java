@@ -36,6 +36,14 @@ public class CheckingActivity extends AppCompatActivity {
         ///감정별 if문 작성
         ///musical calmness, musical happiness, musical sadness 정도?
         /////
+        switch(feeling.charAt(0)){
+            case 'a':
+            case 'n':
+            case 'h':
+            case 's':
+            default:
+                break;
+        }
 
 
         noButton.setOnClickListener(new View.OnClickListener() {
