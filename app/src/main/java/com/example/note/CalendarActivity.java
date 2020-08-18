@@ -20,10 +20,6 @@ import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -42,12 +38,6 @@ public class CalendarActivity extends AppCompatActivity
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
     public static final CharSequence[] ITEMS =
             new CharSequence[] { "EDIT", "SINGLE", "MULTIPLE", "RANGE" };
-
- //   @BindView(R.id.calendarView)
-    //  MaterialCalendarView widget;
-
-  //  @BindView(R.id.textView)
- //   TextView textView;
 
     private ImageView main;
     private  ImageView calendar;
@@ -119,12 +109,11 @@ public class CalendarActivity extends AppCompatActivity
         });
 
 
-        CheckBox calendar_mode = (CheckBox)findViewById(R.id.calendar_mode);
+        CheckBox calendar_mode =findViewById(R.id.calendar_mode);
         calendar_mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        MaterialCalendarView widget = (MaterialCalendarView)findViewById(R.id.calendarView);
-      //  TextView textView = (TextView)findViewById(R.id.textView);
+        MaterialCalendarView widget = findViewById(R.id.calendarView);
         final CalendarMode mode = isChecked ? CalendarMode.WEEKS : CalendarMode.MONTHS;
         widget.state().edit().setCalendarDisplayMode(mode).commit();
 
@@ -136,15 +125,15 @@ public class CalendarActivity extends AppCompatActivity
         selection_mode.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-                MaterialCalendarView widget = (MaterialCalendarView)findViewById(R.id.calendarView);
-                // TextView textView = (TextView)findViewById(R.id.textView);
+                MaterialCalendarView widget =findViewById(R.id.calendarView);
+
                 new AlertDialog.Builder( v.getContext() )
                         .setTitle("Selection Mode")
                         .setSingleChoiceItems(ITEMS, widget.getSelectionMode(),new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                MaterialCalendarView widget = (MaterialCalendarView)findViewById(R.id.calendarView);
-                                // TextView textView = (TextView)findViewById(R.id.textView);
+                                MaterialCalendarView widget = findViewById(R.id.calendarView);
+
                                 // do something here
                                 widget.setSelectionMode(which);
                                 dialog.dismiss();
@@ -161,10 +150,14 @@ public class CalendarActivity extends AppCompatActivity
             public void onClick(View v) {
 
                 MaterialCalendarView widget = (MaterialCalendarView)findViewById(R.id.calendarView);
-                // TextView textView = (TextView)findViewById(R.id.textView);
                 final List<CalendarDay> selectedDates = widget.getSelectedDates();
                 if (!selectedDates.isEmpty()) {
                     Toast.makeText(v.getContext(), selectedDates.toString(), Toast.LENGTH_SHORT).show();
+
+                    
+
+
+
                     Log.e("GettersActivity", selectedDates.toString());
                 } else {
                     Toast.makeText(v.getContext(), "No Selection", Toast.LENGTH_SHORT).show();
@@ -173,8 +166,6 @@ public class CalendarActivity extends AppCompatActivity
 
             }
         });
-
-
 
     }
 
@@ -200,59 +191,6 @@ public class CalendarActivity extends AppCompatActivity
         getSupportActionBar().setTitle(FORMATTER.format(date.getDate()));
     }
 
-//    @OnCheckedChanged(R.id.calendar_mode)
-//    void onCalendarModeChanged(boolean checked) {
-//        MaterialCalendarView widget = (MaterialCalendarView)findViewById(R.id.calendarView);
-//      //  TextView textView = (TextView)findViewById(R.id.textView);
-//        final CalendarMode mode = checked ? CalendarMode.WEEKS : CalendarMode.MONTHS;
-//        widget.state().edit().setCalendarDisplayMode(mode).commit();
-//    }
-
-//    @OnClick(R.id.button_selection_mode) void onChangeSelectionMode() {
-//        new AlertDialog.Builder(this)
-//                .setTitle("Selection Mode")
-//                .setSingleChoiceItems(ITEMS, widget.getSelectionMode(), (dialog, which) -> {
-//                    widget.setSelectionMode(which);
-//                    dialog.dismiss();
-//                })
-//                .show();
-//    }
-//
-
-
-
-//    @OnClick(R.id.button_selection_mode) void onChangeSelectionMode() {
-//
-//        MaterialCalendarView widget = (MaterialCalendarView)findViewById(R.id.calendarView);
-//       // TextView textView = (TextView)findViewById(R.id.textView);
-//        new AlertDialog.Builder(this)
-//                .setTitle("Selection Mode")
-//                .setSingleChoiceItems(ITEMS, widget.getSelectionMode(),new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        MaterialCalendarView widget = (MaterialCalendarView)findViewById(R.id.calendarView);
-//                       // TextView textView = (TextView)findViewById(R.id.textView);
-//                        // do something here
-//                        widget.setSelectionMode(which);
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .show();
-//    }
-//
-//
-//
-//    @OnClick(R.id.get_selected_dates) public void getSelectedDateClick(final View v) {
-//        MaterialCalendarView widget = (MaterialCalendarView)findViewById(R.id.calendarView);
-//        // TextView textView = (TextView)findViewById(R.id.textView);
-//        final List<CalendarDay> selectedDates = widget.getSelectedDates();
-//        if (!selectedDates.isEmpty()) {
-//            Toast.makeText(this, selectedDates.toString(), Toast.LENGTH_SHORT).show();
-//            Log.e("GettersActivity", selectedDates.toString());
-//        } else {
-//            Toast.makeText(this, "No Selection", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
 
 
