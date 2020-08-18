@@ -20,14 +20,15 @@
             android:orientation="vertical"
             tools:context=".BasicActivity">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/button_selection_mode"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Change Unit" />
@@ -41,7 +42,6 @@
                     android:text="Week Calendar Mode" />
 
             </LinearLayout>
-
 
             <com.prolificinteractive.materialcalendarview.MaterialCalendarView
                 android:id="@+id/calendarView"
