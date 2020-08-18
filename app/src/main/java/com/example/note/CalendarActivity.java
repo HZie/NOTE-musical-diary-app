@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -29,6 +30,8 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import org.threeten.bp.format.DateTimeFormatter;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -153,9 +156,34 @@ public class CalendarActivity extends AppCompatActivity
                 final List<CalendarDay> selectedDates = widget.getSelectedDates();
                 if (!selectedDates.isEmpty()) {
                     Toast.makeText(v.getContext(), selectedDates.toString(), Toast.LENGTH_SHORT).show();
-
-
-
+//
+//                    // fileName  -> getFilesDir()+"/Melodies/"+fileName+".mid
+//                    // 폴더에 존재하는 mid 파일들 목록 불러오기 + 파일 이름과 날짜 매칭 및 재생
+//                    String folder_path = Environment.getExternalStorageDirectory().getAbsolutePath()+getFilesDir()+"/Melodies";
+//                    File directory = new File(folder_path);
+//                    File[] files = directory.listFiles();
+//                    List<String> filesNameList = new ArrayList<>();
+//                    for (int i=0; i< files.length; i++) {
+//                        filesNameList.add(files[i].getName());
+//                    }
+//
+//
+//                    try {
+//
+//                        for (CalendarDay selectedDate : selectedDates) {
+//                            //selectedDate.toString()
+//                            for (String MidfileName : filesNameList) {
+//                                if(selectedDate.toString().equals(MidfileName.substring(0,9))){
+//                                   // fileName = MidfileName;
+//                                   //playmelody();
+//                                    // continue;
+//                                }
+//                            }
+//                        }
+//                    }
+//                    catch (Exception e){
+//                        // 파일 저장 안된 날짜 처리
+//                    }
 
 
                     Log.e("GettersActivity", selectedDates.toString());
