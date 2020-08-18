@@ -154,7 +154,7 @@ public class CalendarActivity extends AppCompatActivity
                 if (!selectedDates.isEmpty()) {
                     Toast.makeText(v.getContext(), selectedDates.toString(), Toast.LENGTH_SHORT).show();
 
-                    
+
 
 
 
