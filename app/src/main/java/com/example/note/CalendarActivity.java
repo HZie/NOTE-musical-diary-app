@@ -2,6 +2,7 @@ package com.example.note;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -151,6 +152,21 @@ public class CalendarActivity extends AppCompatActivity
 //                })
 //                .show();
 //    }
+
+    @OnClick(R.id.button_selection_mode) void onChangeSelectionMode() {
+        new AlertDialog.Builder(this)
+                .setTitle("Selection Mode")
+                .setSingleChoiceItems(ITEMS, widget.getSelectionMode(),new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do something here
+                        widget.setSelectionMode(which);
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
 
     @OnClick(R.id.get_selected_dates) public void getSelectedDateClick(final View v) {
         final List<CalendarDay> selectedDates = widget.getSelectedDates();
