@@ -122,9 +122,9 @@ public class RecordActivity extends AppCompatActivity {
 
                 saveMemo();
                 createMelody();
-                //Intent intent=new Intent(getApplicationContext(),CalendarActivity.class);
-                //startActivity(intent);
-                Toast toast = Toast.makeText(getApplicationContext(),"Your melody is saved",Toast.LENGTH_LONG);
+                Intent intent=new Intent(getApplicationContext(),CalendarActivity.class);
+                startActivity(intent);
+                Toast toast = Toast.makeText(getApplicationContext(),"Your melody and memo are saved",Toast.LENGTH_LONG);
                 toast.show();
             }
         });
