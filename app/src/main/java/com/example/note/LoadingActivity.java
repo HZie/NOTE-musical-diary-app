@@ -8,6 +8,10 @@ import androidx.annotation.Nullable;
 
 public class LoadingActivity extends Activity {
 
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

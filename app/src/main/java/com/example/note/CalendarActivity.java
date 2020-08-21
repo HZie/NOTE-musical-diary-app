@@ -4,15 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -30,15 +30,17 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import org.threeten.bp.format.DateTimeFormatter;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 
 public class CalendarActivity extends AppCompatActivity
         implements OnDateSelectedListener, OnMonthChangedListener, OnDateLongClickListener {
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static final CharSequence[] ITEMS =
             new CharSequence[] { "EDIT", "SINGLE", "MULTIPLE", "RANGE" };
 
@@ -46,6 +48,10 @@ public class CalendarActivity extends AppCompatActivity
     private  ImageView calendar;
     private ImageView stars;
     private ImageView settings;
+
+    // 파일 재생
+    private MediaPlayer mp = null;
+    private Realm realm;
 
 
     @Override
@@ -57,7 +63,6 @@ public class CalendarActivity extends AppCompatActivity
         calendar=findViewById(R.id.calendar);
         stars=findViewById(R.id.stars);
         settings=findViewById(R.id.settings);
-
 
         main.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,39 +158,19 @@ public class CalendarActivity extends AppCompatActivity
 
                 MaterialCalendarView widget = (MaterialCalendarView)findViewById(R.id.calendarView);
                 final List<CalendarDay> selectedDates = widget.getSelectedDates();
+
                 if (!selectedDates.isEmpty()) {
-                    Toast.makeText(v.getContext(), selectedDates.toString(), Toast.LENGTH_SHORT).show();
-//
-//                    // fileName  -> getFilesDir()+"/Melodies/"+fileName+".mid
-//                    // 폴더에 존재하는 mid 파일들 목록 불러오기 + 파일 이름과 날짜 매칭 및 재생
-//                    String folder_path = Environment.getExternalStorageDirectory().getAbsolutePath()+getFilesDir()+"/Melodies";
-//                    File directory = new File(folder_path);
-//                    File[] files = directory.listFiles();
-//                    List<String> filesNameList = new ArrayList<>();
-//                    for (int i=0; i< files.length; i++) {
-//                        filesNameList.add(files[i].getName());
-//                    }
-//
-//
-//                    try {
-//
-//                        for (CalendarDay selectedDate : selectedDates) {
-//                            //selectedDate.toString()
-//                            for (String MidfileName : filesNameList) {
-//                                if(selectedDate.toString().equals(MidfileName.substring(0,9))){
-//                                   // fileName = MidfileName;
-//                                   //playmelody();
-//                                    // continue;
-//                                }
-//                            }
-//                        }
-//                    }
-//                    catch (Exception e){
-//                        // 파일 저장 안된 날짜 처리
-//                    }
 
 
-                    Log.e("GettersActivity", selectedDates.toString());
+                    for(int i = 0; i < selectedDates.size();){
+                        if(mp == null || !mp.isPlaying() ){
+                            getFileNameFromDB(FORMATTER.format(selectedDates.get(i).getDate()));
+                            i++;
+                        }
+
+                    }
+
+                    Log.d("GettersActivity", selectedDates.toString());
                 } else {
                     Toast.makeText(v.getContext(), "No Selection", Toast.LENGTH_SHORT).show();
                 }
@@ -219,6 +204,54 @@ public class CalendarActivity extends AppCompatActivity
     }
 
 
+    private void melodyPlay(String fileName){
 
+        mp = MediaPlayer.create(this.getApplicationContext(), Uri.parse(getFilesDir()+"/Melodies/"+fileName+".mid"));
+        if(!mp.isPlaying()){
+            mp.start();
+        }
+        else{
+            mp.pause();
+            mp.release();
+            mp = null;
+        }
+
+    }
+
+
+
+    private String feeling;
+
+    private String getFeeling(String fileName){
+        if(fileName.contains("H"))
+            return "Happy";
+        if(fileName.contains("S"))
+            return "Sad";
+        if(fileName.contains("A"))
+            return "Angry";
+        if(fileName.contains("N"))
+            return "Neutral";
+        return "No Feeling";
+    }
+
+    private void getFileNameFromDB(String date){
+        String fileName;
+        try {
+            realm = Realm.getDefaultInstance();
+            Log.d("date",date);
+            final RealmResults<DiaryMetadata> names = realm.where(DiaryMetadata.class).contains("fileName", date).findAll();
+            fileName = names.get(0).getFileName();
+
+            Toast.makeText(this.getApplicationContext(), date + ": You was " + getFeeling(fileName), Toast.LENGTH_SHORT).show();
+            Log.d("fileName",fileName);
+            melodyPlay(fileName);
+        }
+        catch(Exception e){
+
+        }
+        finally{
+            realm.close();
+        }
+    }
 
 }

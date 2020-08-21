@@ -17,11 +17,20 @@ import android.text.NoCopySpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import io.realm.Realm;
+
 public class MainActivity extends AppCompatActivity {
 
     private ImageView happy;
@@ -42,10 +51,24 @@ public class MainActivity extends AppCompatActivity {
 
     private String checkedFeeling;
 
+    private TextView setToday;
+    private ConstraintLayout changeDate;
+    String todayDate;
+    private Button dateBack;
+    private Button dateContinue;
+    private DatePicker datePicker;
+
+
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Realm.init(this);
 
         happy=findViewById(R.id.happy);
         neutral=findViewById(R.id.neutral);
@@ -106,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 checkingModal.setVisibility(View.GONE);
                 Intent intent=new Intent(MainActivity.this, RecordActivity.class);
                 intent.putExtra("feeling",checkedFeeling);
+                intent.putExtra("todayDate",todayDate);
                 startActivity(intent);
             }
         });
@@ -175,7 +199,51 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime());
 
+        setToday = findViewById(R.id.text_today);
+        setToday.setText(todayDate);
+        changeDate = findViewById(R.id.changeDate);
+        dateBack = findViewById(R.id.changeDateGoBack);
+        dateContinue = findViewById(R.id.changeDateContinue);
+        datePicker = findViewById(R.id.datePicker);
+
+        setToday.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                changeDate.setVisibility(View.VISIBLE);
+            }
+        });
+
+        dateBack.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                changeDate.setVisibility(View.GONE);
+            }
+        });
+
+        DatePicker.OnDateChangedListener mListener = new DatePicker.OnDateChangedListener(){
+            @Override
+            public void onDateChanged(DatePicker datePicker, int year, int month, int day) {
+                String strMonth=(month+1)+"", strDay=day+"";
+                if(month+1 < 10){
+                    strMonth = "0"+(month+1);
+                }
+                if(day < 10){
+                    strDay = "0"+day;
+                }
+                todayDate = year+"-"+strMonth+"-"+strDay;
+            }
+        };
+
+        datePicker.setOnDateChangedListener(mListener);
+
+        dateContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setToday.setText(todayDate);
+                changeDate.setVisibility(View.GONE);
+            }
+        });
 
 
 

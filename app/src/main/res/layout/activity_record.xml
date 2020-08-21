@@ -13,11 +13,14 @@
         android:orientation="vertical">
 
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:gravity="right"
             >
+
+
 
             <Button
                 android:id="@+id/btn_recordSave"
@@ -33,11 +36,10 @@
                 android:id="@+id/btn_recordClear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/primary"
                 android:layout_margin="15dp"
+                android:background="@color/primary"
                 android:text="Clear"
-                android:textColor="#FFFFFF"
-                />
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/btn_recordListen"
@@ -46,28 +48,36 @@
                 android:layout_margin="15dp"
                 android:background="@color/primary"
                 android:text="Listen"
-                android:textColor="#FFFFFF"
-                />
+                android:textColor="#FFFFFF" />
 
         </LinearLayout>
 
         <TextView
+            android:id="@+id/todayDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textSize="24sp"
+            android:layout_gravity="center"/>
+
+        <TextView
             android:id="@+id/noteText"
-            android:background="@color/colorAccent"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="match_parent"
             android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:gravity="center"
             android:hint="Play piano to create melody."
             android:textColor="@color/colorPrimaryDark"
-            android:gravity="center"
             android:textSize="24sp" />
-
 
         <EditText
             android:id="@+id/diaryedit"
             android:layout_width="match_parent"
-            android:layout_height='100dp'
+            android:layout_height="match_parent"
             android:layout_margin="15dp"
+            android:layout_weight="1"
             android:background="@color/colorTextfield"
             android:gravity="top"
             android:hint="How was your day?"
@@ -80,6 +90,7 @@
             android:id="@+id/KeyboardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             />
 
     </LinearLayout>

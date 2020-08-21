@@ -3,7 +3,6 @@ package com.example.note;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -25,6 +24,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import io.realm.Realm;
+import io.realm.RealmObject;
 import midi.MidiFile;
 import midi.MidiTrack;
 import midi.event.meta.Tempo;
@@ -43,7 +44,6 @@ public class RecordActivity extends AppCompatActivity {
     private static boolean isClean = true;
 
     private MediaPlayer mp = null;
-    Date curr;
     String fileName;
 
     EditText mMemoEdit;
@@ -54,6 +54,12 @@ public class RecordActivity extends AppCompatActivity {
     Button rightbtn;
 
     String checkedFeeling;
+    String todayDate;
+
+    TextView tvDate;
+
+    Realm realm;
+    DiaryMetadata metadata;
 
     @Override
     public void onBackPressed() {
@@ -98,23 +104,15 @@ public class RecordActivity extends AppCompatActivity {
 
         mTextFileManager = new RecordManager(this);
         mMemoEdit = findViewById(R.id.diaryedit);
-        //modal=findViewById(R.id.modal);
-        //modalText=findViewById(R.id.modalText);
-        //leftbtn=findViewById(R.id.leftbtn);
-        //rightbtn=findViewById(R.id.rightbtn);
 
         Intent intent = getIntent();
-        checkedFeeling = intent.getExtras().getString("feeling");
+        checkedFeeling = intent.getStringExtra("feeling");
+        todayDate = intent.getStringExtra("todayDate");
 
-        curr = Calendar.getInstance().getTime();
-        fileName = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(curr);
-        fileName = fileName+"_"+checkedFeeling;
+        fileName = todayDate+"_"+checkedFeeling;
 
         noteView=(TextView)findViewById(R.id.noteText);
-        //noteView.setText("Play piano to create melody.");
         btnSave = (Button)findViewById(R.id.btn_recordSave);
-
-
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,9 +120,12 @@ public class RecordActivity extends AppCompatActivity {
 
                 saveMemo();
                 createMelody();
-                //Intent intent=new Intent(getApplicationContext(),CalendarActivity.class);
-                //startActivity(intent);
-                Toast toast = Toast.makeText(getApplicationContext(),"Your melody is saved",Toast.LENGTH_LONG);
+                Intent intent=new Intent(getApplicationContext(),CalendarActivity.class);
+                startActivity(intent);
+                Toast toast = Toast.makeText(getApplicationContext(),"Your melody and memo are saved",Toast.LENGTH_LONG);
+                melody.clear();
+                melodyStr.clear();
+                isClean = true;
                 toast.show();
             }
         });
@@ -150,6 +151,8 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
+        tvDate = findViewById(R.id.todayDate);
+        tvDate.setText(todayDate);
 
 
 
@@ -267,6 +270,7 @@ public class RecordActivity extends AppCompatActivity {
 
 
     private void createMelody(){
+        metadata = new DiaryMetadata(fileName);
         File folderMelody = new File(this.getApplicationContext().getFilesDir(), "Melodies");
         if(!folderMelody.exists()){
             folderMelody.mkdir();
@@ -306,6 +310,7 @@ public class RecordActivity extends AppCompatActivity {
         }catch(IOException e){
             System.err.println(e);
         }
+        DBTransaction();
     }
 
     private void melodyPlay(){
@@ -351,5 +356,13 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
-
+    void DBTransaction(){
+        realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealm(metadata);
+        realm.commitTransaction();
+        realm.close();
+    }
 }
+
+
