@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -53,6 +54,8 @@ public class CalendarActivity extends AppCompatActivity
     private MediaPlayer mp = null;
     private Realm realm;
 
+    Toast toast;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class CalendarActivity extends AppCompatActivity
         calendar=findViewById(R.id.calendar);
         stars=findViewById(R.id.stars);
         settings=findViewById(R.id.settings);
+
 
         main.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +155,7 @@ public class CalendarActivity extends AppCompatActivity
             }
         });
 
-        Button get_selected_dates = (Button)findViewById(R.id.get_selected_dates);
+        final Button get_selected_dates = (Button)findViewById(R.id.get_selected_dates);
         get_selected_dates.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -159,21 +163,30 @@ public class CalendarActivity extends AppCompatActivity
                 MaterialCalendarView widget = (MaterialCalendarView)findViewById(R.id.calendarView);
                 final List<CalendarDay> selectedDates = widget.getSelectedDates();
 
-                if (!selectedDates.isEmpty()) {
+                if(mp == null || !mp.isPlaying()){
+                    String msg = "\n";
 
+                    if (!selectedDates.isEmpty()) {
+                        for(int i = 0; i < selectedDates.size();){
+                            if(mp == null || !mp.isPlaying() ){
+                                msg +=getFileNameFromDB(FORMATTER.format(selectedDates.get(i).getDate())) + "\n";
+                                i++;
+                                Log.d("msg",msg);
 
-                    for(int i = 0; i < selectedDates.size();){
-                        if(mp == null || !mp.isPlaying() ){
-                            getFileNameFromDB(FORMATTER.format(selectedDates.get(i).getDate()));
-                            i++;
+                            }
+
                         }
 
+                        toast = Toast.makeText(v.getContext(),msg,Toast.LENGTH_LONG);
+                        toast.show();
+                        Log.d("GettersActivity", selectedDates.toString());
+                    } else {
+                        toast = Toast.makeText(v.getContext(), "No Selection", Toast.LENGTH_SHORT);
+                        toast.show();
                     }
 
-                    Log.d("GettersActivity", selectedDates.toString());
-                } else {
-                    Toast.makeText(v.getContext(), "No Selection", Toast.LENGTH_SHORT).show();
                 }
+
 
 
             }
@@ -194,7 +207,8 @@ public class CalendarActivity extends AppCompatActivity
     @Override
     public void onDateLongClick(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
         final String text = String.format("%s is available", FORMATTER.format(date.getDate()));
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
@@ -220,8 +234,6 @@ public class CalendarActivity extends AppCompatActivity
 
 
 
-    private String feeling;
-
     private String getFeeling(String fileName){
         if(fileName.contains("H"))
             return "Happy";
@@ -234,24 +246,37 @@ public class CalendarActivity extends AppCompatActivity
         return "No Feeling";
     }
 
-    private void getFileNameFromDB(String date){
-        String fileName;
+
+    private String getFileNameFromDB(String date){
+        String fileName ="";
+        boolean diaryExist = true;
         try {
+
             realm = Realm.getDefaultInstance();
             Log.d("date",date);
             final RealmResults<DiaryMetadata> names = realm.where(DiaryMetadata.class).contains("fileName", date).findAll();
             fileName = names.get(0).getFileName();
 
-            Toast.makeText(this.getApplicationContext(), date + ": You was " + getFeeling(fileName), Toast.LENGTH_SHORT).show();
             Log.d("fileName",fileName);
             melodyPlay(fileName);
         }
         catch(Exception e){
-
+            diaryExist = false;
         }
         finally{
             realm.close();
+
+
+            if(diaryExist){
+                return date + ": " + getFeeling(fileName);
+            }
+            else{
+                return date+": No diary";
+            }
+
         }
     }
+
+
 
 }
